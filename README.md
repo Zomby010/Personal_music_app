@@ -17,6 +17,18 @@ npm run android   # needs Android Studio and a device or emulator
 
 The app uses native modules (`expo-audio`, `expo-media-library`), so it runs in a development build rather than Expo Go.
 
+### Live changes on your phone
+
+The **Android APK** workflow also builds **My Music Dev** (`my-music-dev-apk`), a development build that installs next to the normal app. Install it once, then:
+
+```bash
+npx expo start
+```
+
+Open My Music Dev with the phone on the same Wi-Fi as your computer and pick the server. Saved changes appear on the phone straight away. Rebuild and reinstall only after adding a package with native code or changing `app.json` / `app.config.js`.
+
+Unlike the release app, My Music Dev has network access, because it fetches its code from your computer. `app.config.js` turns this on only when `APP_VARIANT=development`.
+
 ## Layout
 
 ```
