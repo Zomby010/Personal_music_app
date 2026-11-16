@@ -8,6 +8,7 @@ import {
 } from '@/library/scan';
 import { buildTrackList } from '@/library/tracks';
 import type { Track } from '@/library/types';
+import { restoreSession } from '@/player/player';
 
 type LibraryState = {
   permission: PermissionState | 'unknown';
@@ -30,7 +31,10 @@ export const useLibraryStore = create<LibraryState>((set, get) => ({
   init: async () => {
     const permission = await getAudioPermission();
     set({ permission });
-    if (permission === 'granted') await get().rescan();
+    if (permission === 'granted') {
+      await get().rescan();
+      await restoreSession(get().tracks).catch(() => {});
+    }
   },
 
   askPermission: async () => {

@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { View } from 'react-native';
@@ -10,6 +10,8 @@ import { useTheme } from '@/theme';
 export default function RootLayout() {
   const theme = useTheme();
   const init = useLibraryStore((s) => s.init);
+  const pathname = usePathname();
+  const showMiniPlayer = pathname !== '/now-playing' && pathname !== '/queue';
 
   useEffect(() => {
     void init();
@@ -22,9 +24,12 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: theme.background },
-        }}
-      />
-      <MiniPlayer />
+        }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="now-playing" options={{ animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="queue" options={{ animation: 'slide_from_right' }} />
+      </Stack>
+      {showMiniPlayer ? <MiniPlayer /> : null}
     </View>
   );
 }
