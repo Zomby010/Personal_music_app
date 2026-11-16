@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -36,15 +37,21 @@ export function MiniPlayer() {
         />
       </View>
       <View style={styles.row}>
-        <CoverArt seed={track.id} size={44} />
-        <View style={styles.text}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.text }]}>
-            {track.title}
-          </Text>
-          <Text numberOfLines={1} style={[styles.subtitle, { color: theme.textSecondary }]}>
-            {track.artist}
-          </Text>
-        </View>
+        <Pressable
+          onPress={() => router.push('/now-playing')}
+          accessibilityRole="button"
+          accessibilityLabel={`Now playing: ${track.title}. Open player`}
+          style={styles.open}>
+          <CoverArt seed={track.id} size={44} />
+          <View style={styles.text}>
+            <Text numberOfLines={1} style={[styles.title, { color: theme.text }]}>
+              {track.title}
+            </Text>
+            <Text numberOfLines={1} style={[styles.subtitle, { color: theme.textSecondary }]}>
+              {track.artist}
+            </Text>
+          </View>
+        </Pressable>
         <Pressable onPress={previous} hitSlop={8} accessibilityLabel="Previous" style={styles.button}>
           <Ionicons name="play-skip-back" size={22} color={theme.text} />
         </Pressable>
@@ -74,6 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
   },
+  open: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   text: { flex: 1, gap: 2 },
   title: { fontSize: 15, fontWeight: '600' },
   subtitle: { fontSize: 12 },
